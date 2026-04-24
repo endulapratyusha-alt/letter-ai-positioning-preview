@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Letter AI Positioning Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  </head>
+  <body class="bg-slate-50">
+    <div id="root"></div>
+
+    <script type="text/javascript">
+      const { useState } = React;
+
+      function App() {
+        const [mode, setMode] = useState("after");
+
+        return (
+          React.createElement("div", { className: "p-10 max-w-5xl mx-auto" },
+            
+            React.createElement("h1", { className: "text-4xl font-bold mb-4" },
+              "Letter AI Positioning Preview"
+            ),
+
+            React.createElement("p", { className: "mb-6 text-slate-600" },
+              "Preview by Pratyusha Endula"
+            ),
+
+            React.createElement("div", { className: "flex gap-4 mb-6" },
+              React.createElement("button", {
+                onClick: () => setMode("before"),
+                className: "px-4 py-2 bg-black text-white rounded"
+              }, "Before"),
+
+              React.createElement("button", {
+                onClick: () => setMode("after"),
+                className: "px-4 py-2 border rounded"
+              }, "After")
+            ),
+
+            mode === "before"
+              ? React.createElement("div", { className: "grid md:grid-cols-3 gap-4" },
+                  ["Sales", "Enablement", "Customer Experience"].map(item =>
+                    React.createElement("div", {
+                      className: "p-4 bg-white rounded shadow"
+                    },
+                      React.createElement("h3", { className: "font-bold" }, item),
+                      React.createElement("p", null, "Use-case based messaging")
+                    )
+                  )
+                )
+              : React.createElement("div", { className: "grid md:grid-cols-3 gap-4" },
+                  ["Startups", "Mid-market", "Enterprise"].map(item =>
+                    React.createElement("div", {
+                      className: "p-4 bg-white rounded shadow border-2 border-cyan-500"
+                    },
+                      React.createElement("h3", { className: "font-bold" }, item),
+                      React.createElement("p", null, "Revenue readiness positioning")
+                    )
+                  )
+                )
+          )
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        React.createElement(App)
+      );
+    </script>
+  </body>
+</html>
