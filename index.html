@@ -1,332 +1,292 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Letter AI Positioning Preview</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
+import React, { useMemo, useState } from "react";
 
-<body>
-  <div id="root"></div>
+const currentUseCases = [
+  {
+    title: "For Sales",
+    headline: "Empower Your Sales Teams",
+    issue: "Explains what the product supports, but does not anchor the message to buyer urgency or company stage."
+  },
+  {
+    title: "For Enablement",
+    headline: "Elevate Your Training and Coaching",
+    issue: "Keeps Letter close to LMS and coaching competitors instead of moving it into a revenue outcome conversation."
+  },
+  {
+    title: "For Customer Experience",
+    headline: "Enhance Customer Satisfaction",
+    issue: "Broad value message, but hard to tie directly to budget, expansion, or revenue ownership."
+  }
+];
 
-  <script type="text/babel">
-    const { useMemo, useState } = React;
+const segments = [
+  {
+    id: "startup",
+    label: "Startups",
+    headline: "Turn founder knowledge into scalable revenue execution",
+    pain: "Early teams have no structured enablement. Founders carry the pitch and first sales hires learn through shadowing.",
+    promise: "Use AI simulations to convert founder instinct into repeatable sales and customer-facing practice.",
+    packageName: "Starter readiness package",
+    revenue: "Land with onboarding. Expand into coaching, customer scenarios, and manager readiness.",
+    metrics: ["Ramp speed", "Time to first pitch", "Founder time saved"]
+  },
+  {
+    id: "midmarket",
+    label: "Mid-market",
+    headline: "Standardize revenue performance across growing teams",
+    pain: "Teams are growing, but execution is inconsistent across reps, regions, managers, and customer conversations.",
+    promise: "Create a readiness layer that gives every team consistent practice, coaching, and performance signals.",
+    packageName: "Team readiness platform",
+    revenue: "Land with sales onboarding. Expand into coaching analytics, enablement workflows, and CX readiness.",
+    metrics: ["Performance variance", "Certification readiness", "Deal velocity"]
+  },
+  {
+    id: "enterprise",
+    label: "Enterprise",
+    headline: "Drive measurable behavior change at global scale",
+    pain: "Enterprise teams already have LMS tools, but completion does not prove readiness or behavior change.",
+    promise: "Move from training consumption to measurable execution readiness across global revenue teams.",
+    packageName: "Enterprise revenue readiness suite",
+    revenue: "Land with a strategic transformation use case. Expand across regions, product lines, and advanced analytics.",
+    metrics: ["Behavior change", "Global consistency", "Revenue impact"]
+  }
+];
 
-    const currentUseCases = [
-      {
-        title: "For Sales",
-        headline: "Empower Your Sales Teams",
-        issue: "Explains what the product supports, but does not anchor the message to buyer urgency or company stage."
-      },
-      {
-        title: "For Enablement",
-        headline: "Elevate Your Training and Coaching",
-        issue: "Keeps Letter close to LMS and coaching competitors instead of moving it into a revenue outcome conversation."
-      },
-      {
-        title: "For Customer Experience",
-        headline: "Enhance Customer Satisfaction",
-        issue: "Broad value message, but hard to tie directly to budget, expansion, or revenue ownership."
-      }
-    ];
+const competitors = [
+  {
+    group: "Mindtickle, Highspot, Seismic",
+    pattern: "Enterprise-first segmentation",
+    takeaway: "They speak to revenue leaders using productivity, scale, and predictability narratives."
+  },
+  {
+    group: "WorkRamp, Allego",
+    pattern: "Portfolio packaging",
+    takeaway: "They land with training or onboarding, then expand through coaching, content, integrations, and analytics."
+  },
+  {
+    group: "Second Nature AI, Gong adjacencies",
+    pattern: "Performance layer",
+    takeaway: "They move closer to practice, behavior signals, coaching, and real-world execution data."
+  }
+];
 
-    const segments = [
-      {
-        id: "startup",
-        label: "Startups",
-        headline: "Turn founder knowledge into scalable revenue execution",
-        pain: "Early teams have no structured enablement. Founders carry the pitch and first sales hires learn through shadowing.",
-        promise: "Use AI simulations to convert founder instinct into repeatable sales and customer-facing practice.",
-        revenue: "Land with onboarding. Expand into coaching, customer scenarios, and manager readiness.",
-        metrics: ["Ramp speed", "Time to first pitch", "Founder time saved"]
-      },
-      {
-        id: "midmarket",
-        label: "Mid-market",
-        headline: "Standardize revenue performance across growing teams",
-        pain: "Teams are growing, but execution is inconsistent across reps, regions, managers, and customer conversations.",
-        promise: "Create a readiness layer that gives every team consistent practice, coaching, and performance signals.",
-        revenue: "Land with sales onboarding. Expand into coaching analytics, enablement workflows, and CX readiness.",
-        metrics: ["Performance variance", "Certification readiness", "Deal velocity"]
-      },
-      {
-        id: "enterprise",
-        label: "Enterprise",
-        headline: "Drive measurable behavior change at global scale",
-        pain: "Enterprise teams already have LMS tools, but completion does not prove readiness or behavior change.",
-        promise: "Move from training consumption to measurable execution readiness across global revenue teams.",
-        revenue: "Land with a strategic transformation use case. Expand across regions, product lines, and advanced analytics.",
-        metrics: ["Behavior change", "Global consistency", "Revenue impact"]
-      }
-    ];
+const stack = [
+  ["1", "Market signals", "Decode startup ramp pressure, mid-market execution variance, and enterprise enablement fatigue."],
+  ["2", "AI insights", "Surface objections like 'we already have an LMS' and identify where deals stall between training and performance."],
+  ["3", "PMM narrative", "Reframe Letter from AI-powered enablement to AI-native revenue readiness."],
+  ["4", "GTM activation", "Shift website, sales decks, demos, and campaigns from use-case-first to segment-first."],
+  ["5", "Revenue insights", "Track ramp speed, readiness, rep lift, deal velocity, and expansion paths."]
+];
 
-    const competitors = [
-      {
-        group: "Mindtickle, Highspot, Seismic",
-        pattern: "Enterprise-first segmentation",
-        takeaway: "They speak to revenue leaders using productivity, scale, and predictability narratives."
-      },
-      {
-        group: "WorkRamp, Allego",
-        pattern: "Portfolio packaging",
-        takeaway: "They land with training or onboarding, then expand through coaching, content, integrations, and analytics."
-      },
-      {
-        group: "Second Nature AI, Gong adjacencies",
-        pattern: "Performance layer",
-        takeaway: "They move closer to practice, behavior signals, coaching, and real-world execution data."
-      }
-    ];
+function Pill({ children }) {
+  return <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700">{children}</span>;
+}
 
-    const stack = [
-      ["1", "Market signals", "Decode startup ramp pressure, mid-market execution variance, and enterprise enablement fatigue."],
-      ["2", "AI insights", "Surface objections like 'we already have an LMS' and identify where deals stall between training and performance."],
-      ["3", "PMM narrative", "Reframe Letter from AI-powered enablement to AI-native revenue readiness."],
-      ["4", "GTM activation", "Shift website, sales decks, demos, and campaigns from use-case-first to segment-first."],
-      ["5", "Revenue insights", "Track ramp speed, readiness, rep lift, deal velocity, and expansion paths."]
-    ];
+function SectionTitle({ eyebrow, title, subtitle }) {
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      <div className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-cyan-700">{eyebrow}</div>
+      <h2 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">{title}</h2>
+      {subtitle ? <p className="mt-4 text-base leading-7 text-slate-600">{subtitle}</p> : null}
+    </div>
+  );
+}
 
-    function Pill({ children }) {
-      return <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700">{children}</span>;
-    }
+export default function LetterAIPositioningPreview() {
+  const [mode, setMode] = useState("after");
+  const [segmentId, setSegmentId] = useState("midmarket");
+  const segment = useMemo(() => segments.find((item) => item.id === segmentId), [segmentId]);
 
-    function SectionTitle({ eyebrow, title, subtitle }) {
-      return (
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-cyan-700">{eyebrow}</div>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">{title}</h2>
-          {subtitle && <p className="mt-4 text-base leading-7 text-slate-600">{subtitle}</p>}
-        </div>
-      );
-    }
+  return (
+    <main className="min-h-screen bg-slate-50 text-slate-950">
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.1fr_0.9fr] md:px-10 md:py-16">
+          <div>
+            <div className="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-cyan-700">Preview by Pratyusha Endula for Letter AI</div>
+            <div className="mb-5 flex flex-wrap gap-2">
+              <Pill>Letter AI teardown</Pill>
+              <Pill>AI-native GTM stack</Pill>
+              <Pill>Founding PMM POV</Pill>
+            </div>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-950 md:text-6xl">
+              From AI-powered enablement to AI-native revenue readiness
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+              An interactive before-and-after positioning concept showing how Letter AI can move from function-led use cases to segment-led revenue growth.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="#teardown" className="rounded-2xl bg-slate-950 px-5 py-3 text-center text-sm font-semibold text-white shadow-lg transition hover:bg-slate-800">
+                View before vs after
+              </a>
+              <a href="#stack" className="rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-800 transition hover:border-slate-400">
+                See GTM stack
+              </a>
+            </div>
+          </div>
 
-    function App() {
-      const [mode, setMode] = useState("after");
-      const [segmentId, setSegmentId] = useState("midmarket");
-      const segment = useMemo(() => segments.find(item => item.id === segmentId), [segmentId]);
-
-      return (
-        <main className="min-h-screen bg-slate-50 text-slate-950">
-          <section className="border-b border-slate-200 bg-white">
-            <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.1fr_0.9fr] md:px-10 md:py-16">
-              <div>
-                <div className="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-cyan-700">
-                  Preview by Pratyusha Endula for Letter AI
-                </div>
-
-                <div className="mb-5 flex flex-wrap gap-2">
-                  <Pill>Letter AI teardown</Pill>
-                  <Pill>AI-native GTM stack</Pill>
-                  <Pill>Founding PMM POV</Pill>
-                </div>
-
-                <h1 className="text-4xl font-bold tracking-tight text-slate-950 md:text-6xl">
-                  From AI-powered enablement to AI-native revenue readiness
-                </h1>
-
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-                  An interactive before-and-after positioning concept showing how Letter AI can move from function-led use cases to segment-led revenue growth.
-                </p>
-
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a href="#teardown" className="rounded-2xl bg-slate-950 px-5 py-3 text-center text-sm font-semibold text-white shadow-lg transition hover:bg-slate-800">
-                    View before vs after
-                  </a>
-                  <a href="#stack" className="rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-800 transition hover:border-slate-400">
-                    See GTM stack
-                  </a>
-                </div>
+          <div className="rounded-[2rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-2xl">
+            <div className="rounded-[1.4rem] bg-slate-900 p-6">
+              <div className="mb-5 flex items-center justify-between">
+                <div className="text-sm font-medium text-slate-300">Website positioning preview</div>
+                <div className="rounded-full bg-cyan-400/20 px-3 py-1 text-xs font-semibold text-cyan-200">After</div>
               </div>
-
-              <div className="rounded-[2rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-2xl">
-                <div className="rounded-[1.4rem] bg-slate-900 p-6">
-                  <div className="mb-5 flex items-center justify-between">
-                    <div className="text-sm font-medium text-slate-300">Website positioning preview</div>
-                    <div className="rounded-full bg-cyan-400/20 px-3 py-1 text-xs font-semibold text-cyan-200">After</div>
-                  </div>
-
-                  <h3 className="text-3xl font-bold">Revenue teams do not need more training. They need readiness.</h3>
-                  <p className="mt-4 leading-7 text-slate-300">
-                    Letter AI helps teams practice real scenarios, prove behavior change, and turn enablement into measurable performance.
-                  </p>
-
-                  <div className="mt-6 grid gap-3">
-                    {segments.map(item => (
-                      <div key={item.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <div className="text-sm font-semibold text-cyan-200">{item.label}</div>
-                        <div className="mt-1 text-sm text-slate-300">{item.headline}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section id="teardown" className="mx-auto max-w-7xl px-6 py-14 md:px-10">
-            <SectionTitle
-              eyebrow="Before vs after"
-              title="The current site explains use cases. The new site should create buying urgency."
-              subtitle="Toggle between the current use-case structure and the proposed segment-first revenue readiness structure."
-            />
-
-            <div className="mx-auto mt-8 flex w-full max-w-md rounded-2xl border border-slate-200 bg-white p-1 shadow-sm">
-              <button onClick={() => setMode("before")} className={`flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition ${mode === "before" ? "bg-slate-950 text-white" : "text-slate-600 hover:bg-slate-100"}`}>
-                Before
-              </button>
-              <button onClick={() => setMode("after")} className={`flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition ${mode === "after" ? "bg-slate-950 text-white" : "text-slate-600 hover:bg-slate-100"}`}>
-                After
-              </button>
-            </div>
-
-            <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/70 md:p-8">
-              {mode === "before" ? (
-                <div>
-                  <div className="mb-6">
-                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Current use-case structure</div>
-                    <h3 className="mt-3 text-3xl font-bold text-slate-950">Solutions by internal function</h3>
-                    <p className="mt-3 max-w-3xl text-slate-600">This is clear, but it keeps Letter in a crowded LMS and enablement frame.</p>
-                  </div>
-
-                  <div className="grid gap-5 md:grid-cols-3">
-                    {currentUseCases.map(item => (
-                      <div key={item.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-                        <div className="text-sm font-semibold text-slate-500">{item.title}</div>
-                        <h4 className="mt-3 text-xl font-bold text-slate-950">{item.headline}</h4>
-                        <p className="mt-4 text-sm leading-6 text-slate-600">{item.issue}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <div className="mb-6">
-                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700">Proposed segment-first structure</div>
-                    <h3 className="mt-3 text-3xl font-bold text-slate-950">Solutions by company stage and revenue pressure</h3>
-                    <p className="mt-3 max-w-3xl text-slate-600">This gives every buyer a faster way to see themselves, the pain, the package, and the business case.</p>
-                  </div>
-
-                  <div className="grid gap-4 md:grid-cols-3">
-                    {segments.map(item => (
-                      <button key={item.id} onClick={() => setSegmentId(item.id)} className={`rounded-3xl border p-5 text-left transition ${segmentId === item.id ? "border-cyan-500 bg-cyan-50 shadow-lg shadow-cyan-100" : "border-slate-200 bg-white hover:bg-slate-50"}`}>
-                        <div className="text-sm font-semibold text-slate-500">{item.label}</div>
-                        <h4 className="mt-2 text-xl font-bold text-slate-950">{item.headline}</h4>
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="mt-6 grid gap-6 rounded-3xl border border-cyan-100 bg-cyan-50 p-6 md:grid-cols-[0.7fr_1.3fr]">
-                    <div>
-                      <h4 className="text-2xl font-bold">{segment.label}</h4>
-                      <p className="mt-3 text-sm leading-6 text-slate-700">{segment.pain}</p>
-                    </div>
-
-                    <div className="grid gap-4 md:grid-cols-3">
-                      <div className="rounded-2xl bg-white p-4 shadow-sm">
-                        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Promise</div>
-                        <p className="mt-2 text-sm leading-6 text-slate-700">{segment.promise}</p>
-                      </div>
-
-                      <div className="rounded-2xl bg-white p-4 shadow-sm">
-                        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Revenue stream</div>
-                        <p className="mt-2 text-sm leading-6 text-slate-700">{segment.revenue}</p>
-                      </div>
-
-                      <div className="rounded-2xl bg-white p-4 shadow-sm">
-                        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Proof metrics</div>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {segment.metrics.map(metric => <Pill key={metric}>{metric}</Pill>)}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </section>
-
-          <section className="bg-white py-14">
-            <div className="mx-auto max-w-7xl px-6 md:px-10">
-              <SectionTitle
-                eyebrow="Competitive case"
-                title="Competitors sell training. Letter can sell performance readiness."
-                subtitle="The opportunity is to avoid looking like another LMS and own the shift from content completion to behavior change."
-              />
-
-              <div className="mt-10 grid gap-5 md:grid-cols-3">
-                {competitors.map(item => (
-                  <div key={item.group} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                    <div className="text-sm font-semibold text-cyan-700">{item.group}</div>
-                    <h3 className="mt-3 text-xl font-bold text-slate-950">{item.pattern}</h3>
-                    <p className="mt-4 text-sm leading-6 text-slate-600">{item.takeaway}</p>
+              <h3 className="text-3xl font-bold">Revenue teams do not need more training. They need readiness.</h3>
+              <p className="mt-4 leading-7 text-slate-300">
+                Letter AI helps teams practice real scenarios, prove behavior change, and turn enablement into measurable performance.
+              </p>
+              <div className="mt-6 grid gap-3">
+                {segments.map((item) => (
+                  <div key={item.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="text-sm font-semibold text-cyan-200">{item.label}</div>
+                    <div className="mt-1 text-sm text-slate-300">{item.headline}</div>
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="mt-8 rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white md:p-8">
-                <div className="grid gap-6 md:grid-cols-[1fr_auto_1fr] md:items-center">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-400">Traditional category</div>
-                    <h3 className="mt-2 text-2xl font-bold">Learning and enablement</h3>
-                    <p className="mt-3 text-slate-300">Content, courses, completion, and coaching workflows.</p>
+      <section id="teardown" className="mx-auto max-w-7xl px-6 py-14 md:px-10">
+        <SectionTitle
+          eyebrow="Before vs after"
+          title="The current site explains use cases. The new site should create buying urgency."
+          subtitle="Toggle between the current use-case structure and the proposed segment-first revenue readiness structure."
+        />
+
+        <div className="mx-auto mt-8 flex w-full max-w-md rounded-2xl border border-slate-200 bg-white p-1 shadow-sm">
+          <button onClick={() => setMode("before")} className={`flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition ${mode === "before" ? "bg-slate-950 text-white" : "text-slate-600 hover:bg-slate-100"}`}>
+            Before
+          </button>
+          <button onClick={() => setMode("after")} className={`flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition ${mode === "after" ? "bg-slate-950 text-white" : "text-slate-600 hover:bg-slate-100"}`}>
+            After
+          </button>
+        </div>
+
+        <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/70 md:p-8">
+          {mode === "before" ? (
+            <div>
+              <div className="mb-6">
+                <div className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Current use-case structure</div>
+                <h3 className="mt-3 text-3xl font-bold text-slate-950">Solutions by internal function</h3>
+                <p className="mt-3 max-w-3xl text-slate-600">This is clear, but it keeps Letter in a crowded LMS and enablement frame.</p>
+              </div>
+              <div className="grid gap-5 md:grid-cols-3">
+                {currentUseCases.map((item) => (
+                  <div key={item.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                    <div className="text-sm font-semibold text-slate-500">{item.title}</div>
+                    <h4 className="mt-3 text-xl font-bold text-slate-950">{item.headline}</h4>
+                    <p className="mt-4 text-sm leading-6 text-slate-600">{item.issue}</p>
                   </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div className="mb-6">
+                <div className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700">Proposed segment-first structure</div>
+                <h3 className="mt-3 text-3xl font-bold text-slate-950">Solutions by company stage and revenue pressure</h3>
+                <p className="mt-3 max-w-3xl text-slate-600">This gives every buyer a faster way to see themselves, the pain, the package, and the business case.</p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3">
+                {segments.map((item) => (
+                  <button key={item.id} onClick={() => setSegmentId(item.id)} className={`rounded-3xl border p-5 text-left transition ${segmentId === item.id ? "border-cyan-500 bg-cyan-50 shadow-lg shadow-cyan-100" : "border-slate-200 bg-white hover:bg-slate-50"}`}>
+                    <div className="text-sm font-semibold text-slate-500">{item.label}</div>
+                    <h4 className="mt-2 text-xl font-bold text-slate-950">{item.headline}</h4>
+                  </button>
+                ))}
+              </div>
 
-                  <div className="hidden text-3xl text-cyan-300 md:block">→</div>
-
-                  <div>
-                    <div className="text-sm font-semibold text-cyan-300">Letter's category opportunity</div>
-                    <h3 className="mt-2 text-2xl font-bold">AI-native revenue readiness</h3>
-                    <p className="mt-3 text-slate-300">Simulation, practice, behavior change, and measurable execution readiness.</p>
+              <div className="mt-6 grid gap-6 rounded-3xl border border-cyan-100 bg-cyan-50 p-6 md:grid-cols-[0.7fr_1.3fr]">
+                <div>
+                  <h4 className="text-2xl font-bold">{segment.label}</h4>
+                  <p className="mt-3 text-sm leading-6 text-slate-700">{segment.pain}</p>
+                </div>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="rounded-2xl bg-white p-4 shadow-sm">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Promise</div>
+                    <p className="mt-2 text-sm leading-6 text-slate-700">{segment.promise}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white p-4 shadow-sm">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Revenue stream</div>
+                    <p className="mt-2 text-sm leading-6 text-slate-700">{segment.revenue}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white p-4 shadow-sm">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Proof metrics</div>
+                    <div className="mt-3 flex flex-wrap gap-2">{segment.metrics.map((metric) => <Pill key={metric}>{metric}</Pill>)}</div>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
+          )}
+        </div>
+      </section>
 
-          <section id="stack" className="mx-auto max-w-7xl px-6 py-14 md:px-10">
-            <SectionTitle
-              eyebrow="AI-native GTM stack"
-              title="How this becomes a revenue system, not a website rewrite"
-              subtitle="The repositioning can be activated across market insights, narrative, campaigns, sales motion, and revenue measurement."
-            />
-
-            <div className="mt-10 grid gap-4 md:grid-cols-5">
-              {stack.map(([num, title, text]) => (
-                <div key={num} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-950 text-sm font-bold text-white">{num}</div>
-                  <h3 className="mt-5 text-lg font-bold text-slate-950">{title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="bg-slate-950 px-6 py-14 text-white md:px-10">
-            <div className="mx-auto max-w-5xl text-center">
-              <div className="text-sm font-semibold uppercase tracking-[0.22em] text-cyan-300">Final POV</div>
-              <h2 className="mt-4 text-3xl font-bold md:text-5xl">AI is not just making training better. It is raising the standard for performance.</h2>
-
-              <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-                Letter AI already has the ingredients to own revenue readiness. The next step is packaging the story around buyer segments, expansion paths, and measurable execution outcomes.
-              </p>
-
-              <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-5 text-left md:p-6">
-                <div className="text-sm font-semibold text-cyan-300">Suggested positioning statement</div>
-                <p className="mt-3 text-xl font-semibold leading-8">
-                  Letter AI is an AI-native revenue readiness platform that helps teams practice real-world scenarios, prove behavior change, and turn enablement into measurable revenue performance.
-                </p>
+      <section className="bg-white py-14">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <SectionTitle
+            eyebrow="Competitive case"
+            title="Competitors sell training. Letter can sell performance readiness."
+            subtitle="The opportunity is to avoid looking like another LMS and own the shift from content completion to behavior change."
+          />
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {competitors.map((item) => (
+              <div key={item.group} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                <div className="text-sm font-semibold text-cyan-700">{item.group}</div>
+                <h3 className="mt-3 text-xl font-bold text-slate-950">{item.pattern}</h3>
+                <p className="mt-4 text-sm leading-6 text-slate-600">{item.takeaway}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white md:p-8">
+            <div className="grid gap-6 md:grid-cols-[1fr_auto_1fr] md:items-center">
+              <div>
+                <div className="text-sm font-semibold text-slate-400">Traditional category</div>
+                <h3 className="mt-2 text-2xl font-bold">Learning and enablement</h3>
+                <p className="mt-3 text-slate-300">Content, courses, completion, and coaching workflows.</p>
+              </div>
+              <div className="hidden text-3xl text-cyan-300 md:block">→</div>
+              <div>
+                <div className="text-sm font-semibold text-cyan-300">Letter's category opportunity</div>
+                <h3 className="mt-2 text-2xl font-bold">AI-native revenue readiness</h3>
+                <p className="mt-3 text-slate-300">Simulation, practice, behavior change, and measurable execution readiness.</p>
               </div>
             </div>
-          </section>
-        </main>
-      );
-    }
+          </div>
+        </div>
+      </section>
 
-    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
-  </script>
-</body>
-</html>
+      <section id="stack" className="mx-auto max-w-7xl px-6 py-14 md:px-10">
+        <SectionTitle
+          eyebrow="AI-native GTM stack"
+          title="How this becomes a revenue system, not a website rewrite"
+          subtitle="The repositioning can be activated across market insights, narrative, campaigns, sales motion, and revenue measurement."
+        />
+        <div className="mt-10 grid gap-4 md:grid-cols-5">
+          {stack.map(([num, title, text]) => (
+            <div key={num} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-950 text-sm font-bold text-white">{num}</div>
+              <h3 className="mt-5 text-lg font-bold text-slate-950">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-slate-950 px-6 py-14 text-white md:px-10">
+        <div className="mx-auto max-w-5xl text-center">
+          <div className="text-sm font-semibold uppercase tracking-[0.22em] text-cyan-300">Final POV</div>
+          <h2 className="mt-4 text-3xl font-bold md:text-5xl">AI is not just making training better. It is raising the standard for performance.</h2>
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+            Letter AI already has the ingredients to own revenue readiness. The next step is packaging the story around buyer segments, expansion paths, and measurable execution outcomes.
+          </p>
+          <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-5 text-left md:p-6">
+            <div className="text-sm font-semibold text-cyan-300">Suggested positioning statement</div>
+            <p className="mt-3 text-xl font-semibold leading-8">
+              Letter AI is an AI-native revenue readiness platform that helps teams practice real-world scenarios, prove behavior change, and turn enablement into measurable revenue performance.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
